@@ -1,6 +1,6 @@
 # Onidot Orbit 설치 안내
 
-이 안내는 Orbit 0.2.0의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon과 Codex CLI입니다. Claude Code와 다른 플랫폼은 지원 준비 중이며 선택 화면에서 이유를 표시합니다.
+이 안내는 Orbit 0.2.0의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon과 Codex CLI입니다. Codex 연결에는 CLI 0.159.2 이상이 필요합니다. Claude Code와 다른 플랫폼은 지원 준비 중이며 선택 화면에서 이유를 표시합니다.
 
 ## 직접 설치
 
