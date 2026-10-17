@@ -1,6 +1,6 @@
 # Onidot Orbit 설치 안내
 
-이 안내는 Orbit 0.2.0의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon과 Codex CLI입니다. Codex 연결에는 CLI 0.159.2 이상이 필요합니다. Claude Code와 다른 플랫폼은 지원 준비 중이며 선택 화면에서 이유를 표시합니다.
+이 안내는 Orbit 0.2.1의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon과 Codex CLI입니다. Codex 연결에는 CLI 0.159.2 이상이 필요합니다. Claude Code와 다른 플랫폼은 지원 준비 중이며 선택 화면에서 이유를 표시합니다.
 
 ## 직접 설치
 
@@ -27,13 +27,13 @@ curl -fsSL https://orbit.onidot.com/install.sh | bash
 
 ```sh
 # Codex 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.0 --host codex --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.1 --host codex --non-interactive --json
 
 # 호스트 연결 없이 실행물만 설치
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.0 --runtime-only --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.1 --runtime-only --non-interactive --json
 
 # 특정 버전을 선택
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.0 --host codex --non-interactive
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.2.1 --host codex --non-interactive
 ```
 
 호스트가 늘어나면 `--host`를 반복해 선택할 수 있습니다. 이 버전에서 지원되지 않는 호스트를 지정하면 등록을 거부합니다. 비대화형 실행에서 호스트 또는 런타임 전용 선택을 빠뜨리면 임의 선택 없이 중단합니다. 후보 버전은 `--channel preview`로 명시하며 안정판이 없다고 후보를 자동 설치하지 않습니다.
@@ -57,7 +57,7 @@ Codex의 `/hooks` 또는 앱 훅 설정에서 `onidot-orbit` 출처의 훅을 �
 
 ```sh
 oni runtime stop
-oni update --version 0.2.0 --yes
+oni update --version 0.2.1 --yes
 oni setup --host codex --json
 oni plugin doctor --json
 ```
@@ -77,6 +77,6 @@ bash "$HOME/.local/lib/onidot/orbit/install.sh" --recover --prefix "$HOME/.local
 
 - 홈페이지: https://orbit.onidot.com
 - 릴리스: https://github.com/onidot-labs/onidot-orbit-releases/releases
-- 이 버전의 안내: https://orbit.onidot.com/releases/0.2.0/install.md
+- 이 버전의 안내: https://orbit.onidot.com/releases/0.2.1/install.md
 
 배포 안내는 로그인 없이 읽을 수 있습니다. Work·Knowledge 데이터는 이 홈페이지로 전송되지 않습니다. 원격 서버 연결과 쓰기 목적지는 사용자가 선택한 별도 설정을 따릅니다.
