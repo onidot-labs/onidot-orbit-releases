@@ -1,6 +1,6 @@
 # Onidot Orbit 설치 안내
 
-이 안내는 Orbit 0.3.1의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon이며 연결할 수 있는 호스트는 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
+이 안내는 Orbit 0.3.4의 공개 설치·진단 절차입니다. 현재 검증된 환경은 macOS Apple Silicon이며 연결할 수 있는 호스트는 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
 
 ## 직접 설치
 
@@ -27,19 +27,19 @@ curl -fsSL https://orbit.onidot.com/install.sh | bash
 
 ```sh
 # Codex 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.1 --host codex --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.4 --host codex --non-interactive --json
 
 # Claude Code 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.1 --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.4 --host claude-code --non-interactive --json
 
 # 두 호스트를 모두 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.1 --host codex --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.4 --host codex --host claude-code --non-interactive --json
 
 # 호스트 연결 없이 실행물만 설치
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.1 --runtime-only --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.4 --runtime-only --non-interactive --json
 
 # 특정 버전을 선택
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.1 --host codex --non-interactive
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.4 --host codex --non-interactive
 ```
 
 `--host`는 반복해 여러 호스트를 선택할 수 있으며 `claude`는 `claude-code`의 짧은 이름입니다. 이 버전에서 지원되지 않는 호스트를 지정하면 등록을 거부합니다. 비대화형 실행에서 호스트 또는 런타임 전용 선택을 빠뜨리면 임의 선택 없이 중단합니다. 후보 버전은 `--channel preview`로 명시하며 안정판이 없다고 후보를 자동 설치하지 않습니다.
@@ -66,7 +66,7 @@ Claude Code에는 Codex의 훅 신뢰 절차가 없습니다. 설치 뒤 Claude 
 "$HOME/.local/bin/oni" runtime status --json
 ```
 
-이전에 `oni register claude`로 Orbit을 직접 등록했다면, 실행 중인 Claude Code 세션을 모두 닫은 뒤 `oni setup --host claude-code --migrate-user-hooks --json`을 실행합니다. `~/.claude/settings.json`의 Orbit 관측 훅은 백업한 뒤 지우고 플러그인 훅으로 대신합니다. `~/.claude.json`(user scope)의 예전 형식 `onidot-work` MCP 항목은 공식 CLI로 지우고 새 형식으로 다시 등록하며, 실패하면 원래 항목을 되돌립니다. 이전 Orbit이 만든 것과 정확히 같은 항목만 바꾸고, 다른 설정·사용자 수정본은 그대로 둡니다. 옛 onidot-crew 플러그인이 켜져 있으면 역할이 겹치므로 먼저 끄거나 제거합니다.
+이전에 `oni register claude`로 Orbit을 직접 등록했다면 `~/.claude/settings.json`에 옛 관측 훅(`oni runtime hook` 명령)이 남아 있을 수 있습니다. 이때 `oni setup`은 플러그인 관측을 켜지 않고 그 파일 위치를 알려 줍니다. oni setup은 사용자 설정을 지우지 않으므로, 실행 중인 Claude Code 세션을 모두 닫은 뒤 그 파일의 hooks에서 해당 항목을 직접 지우고 같은 `oni setup` 명령을 다시 실행합니다. `~/.claude.json`(user scope)의 예전 형식 `onidot-work` MCP 항목은 setup이 공식 CLI로 지우고 새 형식으로 다시 등록하며, 실패하면 원래 항목을 되돌립니다. 이전 Orbit이 만든 것과 정확히 같은 항목만 바꾸고, 다른 설정·사용자 수정본은 그대로 둡니다. 옛 onidot-crew 플러그인이 켜져 있으면 역할이 겹치므로 먼저 끄거나 제거합니다.
 
 ## 설치 결과 읽기
 
@@ -78,7 +78,7 @@ Claude Code에는 Codex의 훅 신뢰 절차가 없습니다. 설치 뒤 Claude 
 
 ```sh
 oni runtime stop
-oni update --version 0.3.1 --yes
+oni update --version 0.3.4 --yes
 oni setup --host codex --json        # Codex를 쓰는 경우
 oni setup --host claude-code --json  # Claude Code를 쓰는 경우
 oni plugin doctor --host codex --json        # Codex를 쓰는 경우
@@ -87,7 +87,7 @@ oni plugin doctor --host claude-code --json  # Claude Code를 쓰는 경우
 
 `oni setup`은 호스트에 설치된 Orbit Plugin이 이번 Orbit에 동봉된 버전보다 낮으면 동봉 버전으로 올립니다. 더 새 버전이 설치돼 있으면 내리지 않고 유지하며 알림을 표시합니다. 진단에서 플러그인이 동봉 버전보다 낮다고 나오면 같은 `oni setup` 명령을 다시 실행합니다.
 
-이전 Orbit이 사용자 구성에 직접 등록한 관측 훅·예전 형식 `onidot-work` MCP 항목을 정리할 때만 `oni setup --host <호스트> --migrate-user-hooks --json`을 명시합니다. 사용자 수정본·소유 불명 실행물·충돌 설정은 보존하며 강제로 덮어쓰지 않습니다. 설치가 중단되면 출력된 원인을 먼저 확인하고 원본·백업·설치 기록을 삭제하지 않습니다.
+이전 Orbit이 사용자 구성에 직접 등록한 관측 훅은 `oni setup`·`oni doctor`가 알려 주는 설정 파일에서 직접 지웁니다. 사용자 수정본·소유 불명 실행물·충돌 설정은 보존하며 강제로 덮어쓰지 않습니다. 설치가 중단되면 출력된 원인을 먼저 확인하고 원본·백업·설치 기록을 삭제하지 않습니다.
 
 ```sh
 oni plugin status --host <호스트> --json
@@ -102,6 +102,6 @@ bash "$HOME/.local/lib/onidot/orbit/install.sh" --recover --prefix "$HOME/.local
 
 - 홈페이지: https://orbit.onidot.com
 - 릴리스: https://github.com/onidot-labs/onidot-orbit-releases/releases
-- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.1/install.md
+- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.4/install.md
 
 배포 안내는 로그인 없이 읽을 수 있습니다. Work·Knowledge 데이터는 이 홈페이지로 전송되지 않습니다. 원격 서버 연결과 쓰기 목적지는 사용자가 선택한 별도 설정을 따릅니다.
