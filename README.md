@@ -1,10 +1,11 @@
 # Onidot Orbit 설치 안내
 
-이 안내는 Orbit 0.3.17의 설치·진단 절차입니다. 배포 대상은 macOS Apple Silicon이며 연결 구성의 최소 요구사항은 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
+이 안내는 Orbit 0.3.18의 설치·진단 절차입니다. 배포 대상은 macOS Apple Silicon이며 연결 구성의 최소 요구사항은 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
 
 ## 이번 버전의 확인 범위
 
-- Work의 단계 요약 완료, 호스트 작업 목록 연결, 여러 저장소의 파일·Git 변경 조회를 추가했습니다. 완료 조건과 실제 호스트의 작업 표시는 구분합니다.
+- 버그·개선·평가의 보고 준비·미리보기·내보내기·명시 전송·상태 조회·철회 요청을 제공합니다. 보고는 별도로 지정한 수신처와 자격을 사용하며 자동 전송하지 않습니다.
+- 기존 Work 단계 요약, 호스트 작업 목록 연결, 여러 저장소의 파일·Git 변경 조회를 유지합니다. 완료 조건과 실제 호스트의 작업 표시는 구분합니다.
 - 로컬 회귀시험, 격리 설치·업데이트, 합성 작업을 사용한 실제 브라우저 화면을 확인했습니다.
 - Codex 앱의 전체 작업 흐름과 신뢰를 마친 새 세션에서의 하네스 동작은 아직 검증하지 못했습니다. 설치 뒤 `/hooks`에서 훅을 검토하고 새 세션의 실제 도구 호출과 작업 기록을 확인해야 합니다.
 - Claude Code·Claude Desktop Code의 실제 실행 검증은 이번 릴리스에서 수행하지 않았습니다. 연결 구성과 합성 입력 검사는 실제 앱 검증을 대신하지 않습니다.
@@ -36,19 +37,19 @@ curl -fsSL https://orbit.onidot.com/install.sh | bash
 
 ```sh
 # Codex 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.17 --host codex --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.18 --host codex --non-interactive --json
 
 # Claude Code 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.17 --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.18 --host claude-code --non-interactive --json
 
 # 두 호스트를 모두 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.17 --host codex --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.18 --host codex --host claude-code --non-interactive --json
 
 # 호스트 연결 없이 실행물만 설치
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.17 --runtime-only --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.18 --runtime-only --non-interactive --json
 
 # 특정 버전을 선택
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.17 --host codex --non-interactive
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.18 --host codex --non-interactive
 ```
 
 `--host`는 반복해 여러 호스트를 선택할 수 있으며 `claude`는 `claude-code`의 짧은 이름입니다. 이 버전에서 지원되지 않는 호스트를 지정하면 등록을 거부합니다. 비대화형 실행에서 호스트 또는 런타임 전용 선택을 빠뜨리면 임의 선택 없이 중단합니다. 후보 버전은 `--channel preview`로 명시하며 안정판이 없다고 후보를 자동 설치하지 않습니다.
@@ -87,7 +88,7 @@ Claude Code에는 Codex의 훅 신뢰 절차가 없습니다. 설치 뒤 Claude 
 
 ```sh
 oni runtime stop
-oni update --version 0.3.17 --yes
+oni update --version 0.3.18 --yes
 oni setup --host codex --json        # Codex를 쓰는 경우
 oni setup --host claude-code --json  # Claude Code를 쓰는 경우
 oni plugin doctor --host codex --json        # Codex를 쓰는 경우
@@ -107,10 +108,45 @@ bash "$HOME/.local/lib/onidot/orbit/install.sh" --recover --prefix "$HOME/.local
 
 설치 경로 자체가 손상됐으면 같은 버전의 검증된 외부 설치기를 사용합니다. 데이터 복원·서비스 삭제는 프로그램 재설치에 포함하지 않습니다. 기존 Studio 연결과 다른 플러그인도 보존합니다.
 
+## 버그·개선·평가 보고
+
+`oni report`는 사용자가 입력한 JSON으로 보고를 준비합니다. 원문 로그·대화·클라이언트 파일·백업 상태를 자동 수집하지 않습니다. Work·Knowledge 내용을 보고에 자동 복제하지 않습니다. `prepare`, `preview`, `export`는 네트워크를 사용하지 않습니다.
+
+사용자나 운영자가 보고용 HTTPS origin과 접수·자기 보고 조회 전용 자격을 별도로 지정해야 합니다. 수신처나 자격은 Orbit에 들어 있지 않습니다. 일반 계정 로그인과 운영자 자격을 보고 자격으로 대신 사용하지 않습니다. `--credential-file`은 토큰만 담은 현재 사용자 소유의 0600 일반 파일이며, 경로의 심볼릭 링크나 다른 사용자가 쓸 수 있는 디렉터리는 거부합니다. 토큰을 명령행 값·채팅·로그에 붙이지 않습니다.
+
+입력 JSON에는 `type`(BUG/IMPROVEMENT/EVALUATION), `title`, `description`, `productIds` 배열이 필요합니다. 미분류 보고는 빈 배열을 사용합니다. 버그의 `bug`, 평가의 `evaluations` 상세는 선택 사항입니다. 아래 경로와 origin은 사용자가 지정한 실제 값으로 바꿉니다. 초안 디렉터리는 새 절대경로여야 합니다.
+
+```sh
+oni report prepare --input /absolute/report.json --draft /absolute/new-private-report --endpoint <HTTPS-origin> --credential-file /absolute/private/report-credential
+oni report preview --draft /absolute/new-private-report
+oni report export --draft /absolute/new-private-report
+```
+
+수신처는 `--endpoint` 또는 `ONI_REPORT_ENDPOINT`로 지정합니다. JSON은 `--input -`로 표준 입력에서도 받을 수 있습니다. 초안은 수신처·reportId·전송 바이트·전체 payload hash를 고정하며 디렉터리0700/파일0600으로 저장합니다. `preview`는 실제 포함되는 텍스트·수신처·hash·제외 항목을 보여 주고, `export`는 같은 전송 바이트를 표준 출력에 씁니다. 별도 파일로 내보낼 때도 비공개 권한을 유지합니다.
+
+AI는 **보고마다 사용자 채팅 승인**을 받은 뒤에만 전송합니다. 구현·조사 요청이나 과거 보고의 승인을 전송 승인으로 재사용하지 않습니다. 사용자가 실제 내용·수신처·전체 payload hash를 확인한 뒤 다음 명령을 한 번 실행합니다. `<전체-payload-SHA256>`에는 생략하지 않은 전체 hash를 넣습니다.
+
+```sh
+oni report send --draft /absolute/new-private-report --confirm <전체-payload-SHA256> --credential-file /absolute/private/report-credential
+oni report status --draft /absolute/new-private-report --credential-file /absolute/private/report-credential
+```
+
+자격은 `ONI_REPORT_CREDENTIAL` 환경 변수로도 전달할 수 있지만 명령행 토큰 옵션은 제공하지 않습니다. 내용이나 수신처를 바꾸려면 새 초안과 미리보기·승인이 필요합니다. `send` 성공은 서버 응답의 reportId·itemId로 확인합니다. 서버가 반환한 임의 URL로 자격을 전달하거나 자동 이동하지 않습니다.
+
+실패·결과 불명(`unknown`)을 접수 성공으로 보고하지 않습니다. 같은 초안과 reportId를 보존하고 `status`로 대조합니다. 재전송이 필요하면 같은 보고의 재시도에 대해 다시 채팅 승인을 받은 뒤 기존 `send` 명령에 `--retry`를 추가합니다. 자동 재시도·일괄 전송은 하지 않습니다.
+
+철회도 별도로 채팅 승인을 받은 뒤 같은 보고의 전체 hash와 같은 신고자 자격으로 요청합니다. 성공 응답에는 철회 시각이 있어야 하며, 철회 요청을 전체 관리 항목 삭제로 표현하지 않습니다. 철회 결과 불명의 재시도도 같은 초안에 명시 `--retry`만 허용합니다.
+
+```sh
+oni report withdraw --draft /absolute/new-private-report --confirm <전체-payload-SHA256> --credential-file /absolute/private/report-credential
+```
+
+보고 기능은 이 PC Runtime 작업 화면의 조회 전용 경계를 바꾸지 않습니다. 공유 서비스와 기존 Work·Knowledge DB를 보고 저장소로 사용하지 않습니다.
+
 ## 원본과 버전
 
 - 홈페이지: https://orbit.onidot.com
 - 릴리스: https://github.com/onidot-labs/onidot-orbit-releases/releases
-- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.17/install.md
+- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.18/install.md
 
 배포 안내는 로그인 없이 읽을 수 있습니다. Work·Knowledge 데이터는 이 홈페이지로 전송되지 않습니다. 원격 서버 연결과 쓰기 목적지는 사용자가 선택한 별도 설정을 따릅니다.
