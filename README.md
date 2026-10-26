@@ -1,11 +1,12 @@
 # Onidot Orbit 설치 안내
 
-이 안내는 Orbit 0.3.19의 설치·진단 절차입니다. 배포 대상은 macOS Apple Silicon이며 연결 구성의 최소 요구사항은 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
+이 안내는 Orbit 0.3.20의 설치·진단 절차입니다. 배포 대상은 macOS Apple Silicon이며 연결 구성의 최소 요구사항은 Codex CLI 0.159.2 이상과 Claude Code 2.1.289 이상입니다. 다른 플랫폼은 지원 준비 중이며, 설치되지 않았거나 버전이 맞지 않는 호스트는 선택 화면에서 이유를 표시합니다.
 
 ## 이번 버전의 확인 범위
 
 - 요청에 필요한 대화·개인 기억·Work·허용된 연결자료를 찾는 맥락 절차를 제공합니다. 기획 문서나 Wiki는 필수 조건이 아닙니다. 외부 자료는 호스트의 실제 도구와 권한으로 조회합니다.
-- `oni knowledge context`와 Plugin 0.3.13의 요청 훅은 현재 로컬 profile의 기억을 최대 3건·6KiB로 회수합니다. 기록 본문과 판본을 재조회하고, 자료 없음·조회 실패·부분 확인을 구분합니다. 원격 연결 전환·요청 본문 저장·서비스 자동 기동은 하지 않습니다.
+- `oni knowledge context`와 Plugin 0.3.14의 요청 훅은 현재 로컬 profile의 기억을 관련 있는 것만 최대 3건·기본 1.5KiB의 한 줄 목록(제목·id·판본·요약)으로 넣습니다. 본문은 넣지 않으며 적용 전 원문을 다시 읽습니다. 자료 없음·조회 실패·부분 확인을 구분합니다. 원격 연결 전환·요청 본문 저장·서비스 자동 기동은 하지 않습니다.
+- Plugin 0.3.14는 Wiki·Knowledge·작업 기록을 넓게 찾아 원문 인용이 달린 짧은 근거 묶음으로 돌려주는 조회 역할 `archivist`를 추가합니다. 파일 편집·셸 도구는 막혀 있지만 연결마다 이름이 다른 쓰기 MCP 도구는 도구 수준에서 막히지 않아 역할 지침으로만 제한합니다.
 - 격리 Knowledge 서비스의 신규 사용자·여행 선호·메일 스타일·이전 제품 결정 회수와 두 호스트 브리지의 프로세스 출력을 확인했습니다. 실제 Codex CLI에 맥락을 수동 전달한 응답 적용을 확인했습니다. 이 결과는 자동 훅 수신 검증과 다릅니다.
 - 버그·개선·평가의 보고 준비·미리보기·내보내기·명시 전송·상태 조회·철회 요청을 제공합니다. 보고는 별도로 지정한 수신처와 자격을 사용하며 자동 전송하지 않습니다.
 - 기존 Work 단계 요약, 호스트 작업 목록 연결, 여러 저장소의 파일·Git 변경 조회를 유지합니다. 완료 조건과 실제 호스트의 작업 표시는 구분합니다.
@@ -40,19 +41,19 @@ curl -fsSL https://orbit.onidot.com/install.sh | bash
 
 ```sh
 # Codex 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.19 --host codex --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.20 --host codex --non-interactive --json
 
 # Claude Code 연결을 사용자가 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.19 --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.20 --host claude-code --non-interactive --json
 
 # 두 호스트를 모두 선택한 경우
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.19 --host codex --host claude-code --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.20 --host codex --host claude-code --non-interactive --json
 
 # 호스트 연결 없이 실행물만 설치
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.19 --runtime-only --non-interactive --json
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.20 --runtime-only --non-interactive --json
 
 # 특정 버전을 선택
-curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.19 --host codex --non-interactive
+curl -fsSL https://orbit.onidot.com/install.sh | bash -s -- --version 0.3.20 --host codex --non-interactive
 ```
 
 `--host`는 반복해 여러 호스트를 선택할 수 있으며 `claude`는 `claude-code`의 짧은 이름입니다. 이 버전에서 지원되지 않는 호스트를 지정하면 등록을 거부합니다. 비대화형 실행에서 호스트 또는 런타임 전용 선택을 빠뜨리면 임의 선택 없이 중단합니다. 후보 버전은 `--channel preview`로 명시하며 안정판이 없다고 후보를 자동 설치하지 않습니다.
@@ -91,7 +92,7 @@ Claude Code에는 Codex의 훅 신뢰 절차가 없습니다. 설치 뒤 Claude 
 
 ```sh
 oni runtime stop
-oni update --version 0.3.19 --yes
+oni update --version 0.3.20 --yes
 oni setup --host codex --json        # Codex를 쓰는 경우
 oni setup --host claude-code --json  # Claude Code를 쓰는 경우
 oni plugin doctor --host codex --json        # Codex를 쓰는 경우
@@ -150,6 +151,6 @@ oni report withdraw --draft /absolute/new-private-report --confirm <전체-paylo
 
 - 홈페이지: https://orbit.onidot.com
 - 릴리스: https://github.com/onidot-labs/onidot-orbit-releases/releases
-- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.19/install.md
+- 이 버전의 안내: https://orbit.onidot.com/releases/0.3.20/install.md
 
 배포 안내는 로그인 없이 읽을 수 있습니다. Work·Knowledge 데이터는 이 홈페이지로 전송되지 않습니다. 원격 서버 연결과 쓰기 목적지는 사용자가 선택한 별도 설정을 따릅니다.
